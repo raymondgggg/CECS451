@@ -1,5 +1,5 @@
 import math
-from this import d
+
 
 def get_coordinates():
     coordinates = {}
@@ -61,55 +61,48 @@ def a_star(start, end):
     coordinates = get_coordinates()
     map = get_map()
 
-    cityRoute = []
-    totalDistance = 0 
+    # cityRoute = []
+    # totalDistance = 0 
 
     currentCity = start
     route = []
     routeDistances = []
 
     while currentCity != end:
-        connectedCities = map[start]
+        connectedCities = map[currentCity]
         cityNames = []
         cityDistances = []
+        cityPlusStraightLine = []
 
         for city in connectedCities:
             cityNames.append(city[0])
             cityDistances.append(city[1])
         
+        # print(cityDistances)
+        # print(cityNames)
         for i in range(len(cityNames)):
-            cityDistances[i] += all_straight_lines[cityNames[i]]
+            cityPlusStraightLine.append(allStraightLines[cityNames[i]] + cityDistances[i])
         
-        route.append(cityNames[cityDistances.index(min(cityDistances))])
-        routeDistances.append()
+        route.append(cityNames[cityPlusStraightLine.index(min(cityPlusStraightLine))])
+        routeDistances.append(cityDistances[cityPlusStraightLine.index(min(cityPlusStraightLine))])
 
+        currentCity = route[-1]
 
+    return (route, routeDistances)
 
-
-    
-
-    
-
-    
-
-
-    # for c in coordinates:
-
-    return 
 
 
 
 if __name__ == "__main__":
+
     allLines = all_straight_lines("SantaCruz")
     print(allLines)
 
-    # coordinates = get_coordinates()
-    # print(coordinates)
+    coordinates = get_coordinates()
+    print()
+    print(coordinates)
     print()
     print(get_map())
 
-    # print(straight_line_distance("SanJose", "SantaCruz"))
-    
-    # map = get_map()
-    # print(len(map))
-
+    print()
+    print(a_star("Monterey", "SanDiego"))
