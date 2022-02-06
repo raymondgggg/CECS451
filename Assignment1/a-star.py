@@ -1,3 +1,6 @@
+import math
+from this import d
+
 def get_coordinates():
     coordinates = {}
     with open('coordinates.txt') as file:
@@ -7,10 +10,10 @@ def get_coordinates():
                 "(", "").replace(")", "").replace("\n", "").split(",")
             coordinates[city] = [
                 float(coordinatesFormatted[0]), float(coordinatesFormatted[1])]
-    return coordinates
+    return coordinates # Dictionary 
 
 
-def get_map():
+def get_map(): 
     map = {}
     with open('map.txt') as file:
         for line in file.readlines():
@@ -23,15 +26,90 @@ def get_map():
                 tailCityDistance.append(cityData)
 
             # print(mainCity, tailCityDistance)
+            tailCitiesFormatted = []
             for tailCity in tailCityDistance:
-                map[mainCity+hypen+tailCity[0]] = float(tailCity[1])
-    return map
+                tailCitiesFormatted.append((tailCity[0], float(tailCity[1])))
+            map[mainCity] = tailCitiesFormatted
+    return map # Dictionary 
+
+def straight_line_distance(start, end):
+    coordinates = get_coordinates()
+
+    startCoordinatesRad = list(map(math.radians, coordinates[start]))
+    endCoordinatesRad = list(map(math.radians, coordinates[end]))
+
+    r = 3958.8 #mile
+    changeLatitude = (math.sin((endCoordinatesRad[0] - startCoordinatesRad[0])/2))**2
+    cosProduct = math.cos(
+        startCoordinatesRad[0]) * math.cos(endCoordinatesRad[0])
+    ChangeLongitude = (
+        math.sin((endCoordinatesRad[1] - startCoordinatesRad[1])/2))**2
+
+    d = 2 * r * math.asin(math.sqrt(changeLatitude + cosProduct * ChangeLongitude))
+    return d
+
+def all_straight_lines(end):
+    coordinates = get_coordinates()
+    allStraightLines = {}
+    for c in coordinates:
+        straightLineDistance = straight_line_distance(c, end)
+        allStraightLines[c]= straightLineDistance
+    return allStraightLines
+        
+def a_star(start, end):
+    allStraightLines = all_straight_lines(end)
+    coordinates = get_coordinates()
+    map = get_map()
+
+    cityRoute = []
+    totalDistance = 0 
+
+    currentCity = start
+    route = []
+    routeDistances = []
+
+    while currentCity != end:
+        connectedCities = map[start]
+        cityNames = []
+        cityDistances = []
+
+        for city in connectedCities:
+            cityNames.append(city[0])
+            cityDistances.append(city[1])
+        
+        for i in range(len(cityNames)):
+            cityDistances[i] += all_straight_lines[cityNames[i]]
+        
+        route.append(cityNames[cityDistances.index(min(cityDistances))])
+        routeDistances.append()
+
+
+
+
+    
+
+    
+
+    
+
+
+    # for c in coordinates:
+
+    return 
+
 
 
 if __name__ == "__main__":
-    coordinates = get_coordinates()
-    print(coordinates)
+    allLines = all_straight_lines("SantaCruz")
+    print(allLines)
+
+    # coordinates = get_coordinates()
+    # print(coordinates)
     print()
-    map = get_map()
-    print(map)
+    print(get_map())
+
+    # print(straight_line_distance("SanJose", "SantaCruz"))
+    
+    # map = get_map()
+    # print(len(map))
 
