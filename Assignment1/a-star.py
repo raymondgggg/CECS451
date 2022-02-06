@@ -58,8 +58,12 @@ def all_straight_lines(end):
         
 def a_star(start, end):
     allStraightLines = all_straight_lines(end)
+    print(allStraightLines)
+    print()
     coordinates = get_coordinates()
     map = get_map()
+    print(map)
+    print()
 
     # cityRoute = []
     # totalDistance = 0 
@@ -78,16 +82,26 @@ def a_star(start, end):
             cityNames.append(city[0])
             cityDistances.append(city[1])
         
-        # print(cityDistances)
-        # print(cityNames)
+        print(cityDistances)
+        print(cityNames)
         for i in range(len(cityNames)):
             cityPlusStraightLine.append(allStraightLines[cityNames[i]] + cityDistances[i])
+            if cityPlusStraightLine[i] == cityDistances[i]:
+                cityPlusStraightLine[i] = 0
+            # write an if statement about how if the new city chosen is the last city then we recalculate
+            # also the second output, make sure mine matches that one as well
+        print(cityPlusStraightLine)
+        
         
         route.append(cityNames[cityPlusStraightLine.index(min(cityPlusStraightLine))])
         routeDistances.append(cityDistances[cityPlusStraightLine.index(min(cityPlusStraightLine))])
+        print(route)
+        print(routeDistances)
+        print()
 
         currentCity = route[-1]
 
+    print()
     return (route, routeDistances)
 
 
@@ -95,14 +109,14 @@ def a_star(start, end):
 
 if __name__ == "__main__":
 
-    allLines = all_straight_lines("SantaCruz")
-    print(allLines)
+    # allLines = all_straight_lines("SantaCruz")
+    # print(allLines)
 
-    coordinates = get_coordinates()
-    print()
-    print(coordinates)
-    print()
-    print(get_map())
+    # coordinates = get_coordinates()
+    # print()
+    # print(coordinates)
+    # print()
+    # print(get_map())
 
     print()
-    print(a_star("Monterey", "SanDiego"))
+    print(a_star("LongBeach", "SanFrancisco"))
