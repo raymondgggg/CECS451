@@ -79,9 +79,11 @@ def a_star(start, end):
     # totalDistance = 0 
 
     currentCity = start
-    route = []
+    routes = []
     routeDistances = []
 
+    
+    
     while currentCity != end:
         connectedCities = map[currentCity]
         cityNames = []
@@ -95,25 +97,26 @@ def a_star(start, end):
         print(cityDistances)
         print(cityNames)
         for i in range(len(cityNames)):
+            if allStraightLines[cityNames[i]] == 0:
+                cityPlusStraightLine.append(cityDistances[i])
+                break
+
             cityPlusStraightLine.append(allStraightLines[cityNames[i]] + cityDistances[i] + unpack(cityNames[i], end))
             
-            if cityPlusStraightLine[i] == cityDistances[i]:
-                cityPlusStraightLine[i] = 0
-            # write an if statement about how if the new city chosen is the last city then we recalculate
-            # also the second output, make sure mine matches that one as well
+            
         print(cityPlusStraightLine)
         
         
-        route.append(cityNames[cityPlusStraightLine.index(min(cityPlusStraightLine))])
+        routes.append(cityNames[cityPlusStraightLine.index(min(cityPlusStraightLine))])
         routeDistances.append(cityDistances[cityPlusStraightLine.index(min(cityPlusStraightLine))])
-        print(route)
+        print(routes)
         print(routeDistances)
         print()
 
-        currentCity = route[-1]
+        currentCity = routes[-1]
 
     print()
-    return (route, routeDistances)
+    return (routes, routeDistances)
 
 
 
@@ -130,4 +133,4 @@ if __name__ == "__main__":
     # print(get_map())
 
     print()
-    print(a_star("Monterey", "SanDiego"))
+    print(a_star("Eureka", "SouthLakeTahoe"))
