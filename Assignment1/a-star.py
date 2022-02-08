@@ -1,5 +1,8 @@
+# Raymond Guevara Lozano
+# 018504731
+# CECS 451 Sec 01
 import math
-
+import sys
 
 def get_coordinates():
     coordinates = {}
@@ -11,7 +14,6 @@ def get_coordinates():
             coordinates[city] = [
                 float(coordinatesFormatted[0]), float(coordinatesFormatted[1])]
     return coordinates # Dictionary 
-
 
 def get_map(): 
     map = {}
@@ -65,25 +67,14 @@ def unpack(city, end):
         connectedCitiesStraightLines.append(allStraightLines[city[0]])
     return min(connectedCitiesStraightLines)
 
-    
 def a_star(start, end):
     allStraightLines = all_straight_lines(end)
-    print(allStraightLines)
-    print()
-    coordinates = get_coordinates()
-    map = get_map()
-    print(map)
-    print()
-
-    # cityRoute = []
-    # totalDistance = 0 
+    map = get_map() 
 
     currentCity = start
     routes = []
     routeDistances = []
 
-    
-    
     while currentCity != end:
         connectedCities = map[currentCity]
         cityNames = []
@@ -93,44 +84,24 @@ def a_star(start, end):
         for city in connectedCities:
             cityNames.append(city[0])
             cityDistances.append(city[1])
-        
-        print(cityDistances)
-        print(cityNames)
+
         for i in range(len(cityNames)):
             if allStraightLines[cityNames[i]] == 0:
                 cityPlusStraightLine.append(cityDistances[i])
                 break
 
             cityPlusStraightLine.append(allStraightLines[cityNames[i]] + cityDistances[i] + unpack(cityNames[i], end))
-            
-            
-        print(cityPlusStraightLine)
-        
         
         routes.append(cityNames[cityPlusStraightLine.index(min(cityPlusStraightLine))])
         routeDistances.append(cityDistances[cityPlusStraightLine.index(min(cityPlusStraightLine))])
-        print(routes)
-        print(routeDistances)
-        print()
-
         currentCity = routes[-1]
-
-    print()
     return (routes, routeDistances)
 
-
-
-
 if __name__ == "__main__":
-    # print(unpack("LongBeach", "SanFrancisco"))
-    # allLines = all_straight_lines("SanFrancisco")
-    # print(allLines)
+    print(f'From city: {sys.argv[1]}')
+    print(f'To city: {sys.argv[2]}')
 
-    # coordinates = get_coordinates()
-    # print()
-    # print(coordinates)
-    # print()
-    # print(get_map())
-
-    print()
-    print(a_star("Eureka", "SouthLakeTahoe"))
+    route, distance = a_star(sys.argv[1], sys.argv[2])
+    print(f"Best Route: {sys.argv[1]} - ", end='')
+    print(*route, sep=" - ")  
+    print(f'Total distance: {sum(distance):.2f} mi') 
