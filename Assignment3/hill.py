@@ -1,6 +1,6 @@
 from board import Board
 import copy
-
+import time
 
 """function that returns a list of tuples of the adjacent 
    spaces for a given space of the board [(x1,y1), ... , (Xn, Yn)]"""
@@ -27,8 +27,6 @@ def get_adjacent_spaces(board, x, y):
 
     return aIndices
     
-
-
 """This function returns 
    a board that has 
    a lower number of 
@@ -56,7 +54,6 @@ def get_neighbor(board):
                     adjacentboards = []
     return board
 
-
 """function to see if space inputted has a queen already"""
 def is_full(board,i,j):
     board_map = board.get_map()
@@ -64,6 +61,7 @@ def is_full(board,i,j):
         return True
     return False
 
+"""function to determine row fitness"""
 def row_fitness(board):
     attackingRows = 0
     map = board.get_map()
@@ -71,8 +69,6 @@ def row_fitness(board):
         if sum(map[row]) > 1:
             attackingRows += 1
     return attackingRows
-
-
 
 """Make sure that I implement random restart (somehow)"""
 def hill_climbing(board):
@@ -89,16 +85,18 @@ def hill_climbing(board):
 
 if __name__ == '__main__':
     test = Board(5)
-    test.show_map()
-    print(f"fitness: {test.get_fitness() + row_fitness(test)}")
-
-    
+    start = time.time()
     newBoard = hill_climbing(test)
+    end = time.time()
 
-
-    print()
-
-    newBoard.show_map()
-    print(f"fitness: {newBoard.get_fitness() + row_fitness(newBoard)}")
+    print(f"Running time: {round(1000 * (end-start))} ms")
+    map = newBoard.get_map()
+    for row in range(len(newBoard.get_map())):
+        for col in range(len(newBoard.get_map())):
+            if map[row][col] == 0:
+                print("-", end=" ")
+            else:
+                print(map[row][col], end=" ")
+        print()
 
 
