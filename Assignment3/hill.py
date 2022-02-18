@@ -45,14 +45,15 @@ def get_neighbor(board):
                     newBoard = copy.deepcopy(board)
                     if is_full(newBoard, space[0], space[1]):
                         continue
+
                     newBoard.flip(row, column)
                     newBoard.flip(space[0], space[1])
                     adjacentboards.append(newBoard)
-    
-    for newBoard in adjacentboards:
-        if newBoard.get_fitness() < board.get_fitness():
-            board = newBoard
 
+                    for newBoard in adjacentboards:
+                        if newBoard.get_fitness() + row_fitness(newBoard) < board.get_fitness() + row_fitness(board):
+                            board = newBoard
+                    adjacentboards = []
     return board
 
 
@@ -63,31 +64,41 @@ def is_full(board,i,j):
         return True
     return False
 
+def row_fitness(board):
+    attackingRows = 0
+    map = board.get_map()
+    for row in range(len(map)):
+        if sum(map[row]) > 1:
+            attackingRows += 1
+    return attackingRows
 
 
 
 """Make sure that I implement random restart (somehow)"""
 def hill_climbing(board):
-    current_matrix = board.get_map()
+    currentBoard = board
+
     while True:
-        """I will come back to this"""
-        
-        
-
-
-    return "raymond"
-
-
-
+        currentBoard = get_neighbor(currentBoard)
+        currentBoardFitness = currentBoard.get_fitness() + row_fitness(currentBoard)
+        if currentBoardFitness == 0:
+            return currentBoard
+        else:
+            currentBoard = Board(len(currentBoard.get_map()))
 
 
 if __name__ == '__main__':
     test = Board(5)
+    test.show_map()
+    print(f"fitness: {test.get_fitness() + row_fitness(test)}")
 
-    aSpaces = get_adjacent_spaces(test, 0,2)
-    print(aSpaces)
     
+    newBoard = hill_climbing(test)
 
-    # print(test.get_fitness())
-    # test.show_map()
-    # print(is_full(test,0,0))
+
+    print()
+
+    newBoard.show_map()
+    print(f"fitness: {newBoard.get_fitness() + row_fitness(newBoard)}")
+
+
