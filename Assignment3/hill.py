@@ -34,7 +34,7 @@ def get_adjacent_spaces(board, x, y):
 def get_neighbor(board):
     nQueens = len(board.get_map())
     adjacentboards = []
-
+    
     for row in range(nQueens):
         for column in range(nQueens):             
             if is_full(board, row, column):

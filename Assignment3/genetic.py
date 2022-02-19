@@ -27,15 +27,42 @@ def cross_over():
 def mutation():
     """raymond"""
 
-"""pass in the dna encoded ordering of queens 
-   and get the board object step 2"""
-def gene_to_board(gene):
-    """Raymond1""" 
+"""function to make nxn board with no queens"""
+def n_zeros(board):
+    map = board.get_map()
+    for row in range(len(map)):
+        for col in range(len(map)):
+            if map[row][col] == 1:
+                board.flip(row,col)
 
+"""pass in the dna encoded ordering of queens 
+   and get the board object returned"""
+def gene_to_board(gene):
+    board = Board(len(gene))
+    n_zeros(board)
+    map = board.get_map()
+    row = 0
+    for col in gene:
+        map[row][int(col)] = 1
+        row += 1
+    return board
+    
 """function that takes a board object and converts it to a string representation 
-   for further genetic programming step 1"""
+   for further genetic programming"""
 def board_to_gene(board):
-    """Raymond"""
+    stringList = []
+    map = board.get_map()
+    for row in range(len(map)):
+        for col in range(len(map)):
+            if map[row][col] == 1:
+                stringList.append(str(col))
+    return "".join(stringList) # represents the gene
 
 if __name__ == "__main__":
-    """raymond"""
+    test = Board(5)
+
+    test.show_map()
+    print(board_to_gene(test))
+
+
+
