@@ -3,7 +3,7 @@ import copy
 import time
 
 """function that returns a list of tuples of the adjacent 
-   spaces for a given space of the board [(x1,y1), ... , (Xn, Yn)]"""
+   spaces for a given space (x,y) of the board --> [(x1,y1), ... , (Xn, Yn)]"""
 def get_adjacent_spaces(board, x, y):
     map = board.get_map()
     aIndices  = []
@@ -80,7 +80,7 @@ def hill_climbing(board):
         if currentBoardFitness == 0:
             return currentBoard
         else:
-            currentBoard = Board(len(currentBoard.get_map()))
+            currentBoard = Board(len(currentBoard.get_map())) # random restart
 
 
 if __name__ == '__main__':
@@ -98,5 +98,3 @@ if __name__ == '__main__':
             else:
                 print(map[row][col], end=" ")
         print()
-
-
