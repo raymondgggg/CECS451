@@ -44,10 +44,7 @@ def encoded_fitness(gene):
     geneBoard = gene_to_board(gene)
     return geneBoard.get_fitness()
     
-"""pass in a gene's fitness along with a list of the other fitnesses and receive 
-   a normalized value for gene fitness
-   gene:string 
-   genePool:[string]"""
+"""pass in list of gene pool and get back a list of normalized gene fitnesses"""
 def normalize_fitness(genePool): #optimized 
     geneFitnesses = [0, 0, 0, 0, 0, 0, 0, 0]
     for i in range(len(geneFitnesses)):
@@ -127,16 +124,16 @@ def cross_over(genePairs):
    randomly mutatate a part of each gene 
    genes: [gene1, gene2, ... , geneN] 
    genes encoded as strings"""
-def mutation(genes):
-    mutatedGenes = []
-    for gene in genes:
-        randomIndex = random.randint(0, len(gene)-1)
-        randomMutation = random.randint(0, len(gene)-1)
+def mutation(genes): #optimized
+    mutatedGenes = [0] * len(genes)
+    for i in range(len(genes)):
+        randomIndex = random.randint(0, len(genes[i])-1)
+        randomMutation = random.randint(0, len(genes[i])-1)
 
-        geneToList = list(gene)
+        geneToList = list(genes[i])
         geneToList[randomIndex] = str(randomMutation)
 
-        mutatedGenes.append("".join(geneToList))
+        mutatedGenes[i] = "".join(geneToList)
     return mutatedGenes
 
 """function to make nxn board with no queens"""
