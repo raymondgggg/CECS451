@@ -1,3 +1,6 @@
+# Raymond Guevara Lozano
+# 018504731
+
 from board import Board
 import copy
 import time

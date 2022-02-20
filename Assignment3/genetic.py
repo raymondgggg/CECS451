@@ -1,3 +1,5 @@
+# Raymond Guevara Lozano
+# 018504731
 import random
 import time
 from board import Board
