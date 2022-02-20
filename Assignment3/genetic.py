@@ -139,9 +139,7 @@ def mutation(genes):
 def n_zeros(board):
     map = board.get_map()
     for row in range(len(map)):
-        for col in range(len(map)):
-            if map[row][col] == 1:
-                board.flip(row,col)
+        map[row] = [i * 0 for i in map[row]]
 
 """pass in the dna encoded ordering of queens 
    and get the board object returned"""
