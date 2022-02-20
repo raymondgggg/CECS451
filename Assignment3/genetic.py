@@ -13,9 +13,7 @@ def genetic_algorhythm(numGenes):
     winingGene = ''
     geneFitness = -1
     while geneFitness != 0:
-        nFitness = []
-        for gene in population:
-            nFitness.append(normalize_fitness(gene, population))
+        nFitness = normalize_fitness(population)
 
         selectedGenes = []
         for gene in population:
@@ -51,12 +49,21 @@ def encoded_fitness(gene):
    a normalized value for gene fitness
    gene:string 
    genePool:[string]"""
-def normalize_fitness(gene, genePool):
-    geneFitness = encoded_fitness(gene)
-    genePoolFitSum = 0.0
-    for individualGene in genePool:
-        genePoolFitSum += encoded_fitness(individualGene)
-    return geneFitness/genePoolFitSum
+def normalize_fitness(genePool): #optimized 
+    geneFitnesses = [0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(geneFitnesses)):
+        geneFitnesses[i] = encoded_fitness(genePool[i])
+        
+    
+    fitnessSum = sum(geneFitnesses)
+
+    nGeneFitnesses = [0, 0, 0, 0, 0, 0, 0, 0]
+    i = 0
+    for gFitness in geneFitnesses:
+        nGeneFitnesses[i] = gFitness / fitnessSum
+        i += 1
+
+    return nGeneFitnesses
     
 """function that uses normalized fitness value as chance of selection
    Note: needs to take in the genes, and the normalized values to determine selection
