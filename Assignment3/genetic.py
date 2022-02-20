@@ -20,7 +20,8 @@ def normalize_fitness(gene, genePool):
     
 
 """function that uses normalized fitness value as chance of selection
-   Note: needs to take in the genes, and the normalized values to determine selection"""
+   Note: needs to take in the genes, and the normalized values to determine selection
+   and both the genes list and normalizedGenes list need to correspond"""
 def selection(genes,normalizedGenes):
     r = random.uniform(0,1)
 
@@ -33,21 +34,55 @@ def selection(genes,normalizedGenes):
     else:
         return genes[4]
 
+"""function that takes in a list of genes and returns a list of tuples of pairs"""
+def pairs(genes):
+    genesPairs = []
+    for i in range(len(genes)-1):
+        genesPairs.append((genes[i], genes[i+1]))
+    return genesPairs
+
+
+"""function that takes in the gene pairs, chooses random crossover index, 
+   and combines the two genes, genePairs: [(gene1, gene2), (gene3, gene4)]"""
+def cross_over(genePairs):
+    newGenes = []
+    geneLength = len(genePairs[0][0])
+    crossoverIndex = random.randint(0, geneLength-1)
+    for pair in genePairs:
+        gene1 = pair[0]
+        gene2 = pair[1]
+
+        gene1FirstHalf = gene1[0:crossoverIndex]
+        gene1SecondHalf = gene1[crossoverIndex:]
+
+        gene2FirstHalf = gene2[0:crossoverIndex]
+        gene2SecondHalf = gene2[crossoverIndex:]
+
+        newGene1 = gene1FirstHalf + gene2SecondHalf
+        newGene2 = gene2FirstHalf + gene1SecondHalf
+
+        newGenes.append(newGene1)
+        newGenes.append(newGene2)
     
+    return newGenes
 
-    """RayRay"""
-
-""" step 6"""
-def pairs():
-    """Raymond"""
-
-"""step 7"""
-def cross_over():
-    """Raymond """
     
-"""step 8"""
-def mutation():
-    """raymond"""
+"""function that will take the new crossed over genes and 
+   randomly mutation a part of each gene 
+   genes: [gene1, gene2, ... , geneN] 
+   genes encoded as strings"""
+def mutation(genes):
+    mutatedGenes = []
+    for gene in genes:
+        randomIndex = random.randint(0, len(gene)-1)
+        randomMutation = random.randint(0, len(gene)-1)
+
+        geneToList = list(gene)
+        geneToList[randomIndex] = str(randomMutation)
+
+        mutatedGenes.append("".join(geneToList))
+    return mutatedGenes
+
 
 """function to make nxn board with no queens"""
 def n_zeros(board):
@@ -82,7 +117,7 @@ def board_to_gene(board):
 
 if __name__ == "__main__":
 
-    genes = ["0123", "0321", "2310" ,"1320"]
+    genes = ["01234", "03421", "23104" ,"13204"]
     i = 0
     for gene in genes:
         print(f"Gene {i+1} Fitness: {encoded_fitness(gene)}")
