@@ -1,4 +1,5 @@
 import random
+import time
 from board import Board
 
 
@@ -9,6 +10,7 @@ def genetic_algorhythm(numGenes):
     for board in boards: # get gene representation of boards
         population.append(board_to_gene(board))
 
+    winingGene = ''
     geneFitness = -1
     while geneFitness != 0:
         nFitness = []
@@ -27,7 +29,10 @@ def genetic_algorhythm(numGenes):
 
         for gene in population:
             if encoded_fitness(gene) == 0:
-                return gene
+                geneFitness = 0
+                winingGene = gene
+
+    return winingGene
 
 """function that generates n boards mxm"""
 def generate_boards(n, m):
@@ -59,14 +64,28 @@ def normalize_fitness(gene, genePool):
 def selection(genes,normalizedGenes):
     r = random.uniform(0,1)
 
-    if r < normalizedGenes[0]:
+    selectValues = []
+    selectSum = 0
+    for nGene in normalizedGenes:
+        selectSum += nGene
+        selectValues.append(selectSum)
+    
+    if r < selectValues[0]:
         return genes[0]
-    elif r < normalizedGenes[1]:
+    elif r < selectValues[1]:
         return genes[1]
-    elif r < normalizedGenes[2]:
+    elif r < selectValues[2]:
         return genes[2]
-    else:
+    elif r < selectValues[3]:
+        return genes[3]
+    elif r < selectValues[4]:
         return genes[4]
+    elif r < selectValues[5]:
+        return genes[5]
+    elif r < selectValues[6]:
+        return genes[6]
+    else:
+        return genes[7]
 
 """function that takes in a list of genes and returns a list of tuples of pairs"""
 def pairs(genes):
@@ -148,30 +167,18 @@ def board_to_gene(board):
     return "".join(stringList) # represents the gene
 
 if __name__ == "__main__":
+    start = time.time()
+    solutionGene = genetic_algorhythm(8)
+    end = time.time()
 
-
-    boards = generate_boards(4, 5)
-
-    for board in boards:
-        board.show_map()
+    solutionBoard = gene_to_board(solutionGene)
+    print(f"Running time: {round(1000 * (end-start))} ms")
+    
+    map = solutionBoard.get_map()
+    for row in range(len(solutionBoard.get_map())):
+        for col in range(len(solutionBoard.get_map())):
+            if map[row][col] == 0:
+                print("-", end=" ")
+            else:
+                print(map[row][col], end=" ")
         print()
-
-
-    # genes = ["01234", "03421", "23104" ,"13204"]
-    # i = 0
-    # for gene in genes:
-    #     print(f"Gene {i+1} Fitness: {encoded_fitness(gene)}")
-    #     i += 1
-
-    # print(normalize_fitness("0123", genes))
-
-    # test = Board(5)
-
-    # test.show_map()
-    # gene = board_to_gene(test)
-    # print(f"\nString encoding: {gene}\n")
-
-    # originalBoard = gene_to_board(gene)
-    # print(f"Board from gene {gene}:\n")
-    # originalBoard.show_map()
-
