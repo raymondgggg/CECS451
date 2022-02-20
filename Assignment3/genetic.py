@@ -1,6 +1,41 @@
 import random
 from board import Board
 
+
+def genetic_algorhythm(numGenes):
+    boards = generate_boards(numGenes, 5)
+    population = []
+
+    for board in boards: # get gene representation of boards
+        population.append(board_to_gene(board))
+
+    geneFitness = -1
+    while geneFitness != 0:
+        nFitness = []
+        for gene in population:
+            nFitness.append(normalize_fitness(gene, population))
+
+        selectedGenes = []
+        for gene in population:
+            selectedGenes.append(selection(population, nFitness))
+
+        genePairs = pairs(selectedGenes)
+        crossedGenes = cross_over(genePairs)
+        mutatedGenes = mutation(crossedGenes)
+
+        population = mutatedGenes
+
+        for gene in population:
+            if encoded_fitness(gene) == 0:
+                return gene
+
+"""function that generates n boards mxm"""
+def generate_boards(n, m):
+    boards = []
+    for i in range(n):
+        boards.append(Board(m))
+    return boards
+
 """pass in the dna encoded ordering of the queens 
    and get the the fitness of the board setup"""
 def encoded_fitness(gene):
@@ -18,7 +53,6 @@ def normalize_fitness(gene, genePool):
         genePoolFitSum += encoded_fitness(individualGene)
     return geneFitness/genePoolFitSum
     
-
 """function that uses normalized fitness value as chance of selection
    Note: needs to take in the genes, and the normalized values to determine selection
    and both the genes list and normalizedGenes list need to correspond"""
@@ -41,9 +75,9 @@ def pairs(genes):
         genesPairs.append((genes[i], genes[i+1]))
     return genesPairs
 
-
 """function that takes in the gene pairs, chooses random crossover index, 
-   and combines the two genes, genePairs: [(gene1, gene2), (gene3, gene4)]"""
+   and combines the two genes, genePairs: [(gene1, gene2), (gene3, gene4)]
+   returns a list of new genes"""
 def cross_over(genePairs):
     newGenes = []
     geneLength = len(genePairs[0][0])
@@ -66,9 +100,8 @@ def cross_over(genePairs):
     
     return newGenes
 
-    
 """function that will take the new crossed over genes and 
-   randomly mutation a part of each gene 
+   randomly mutatate a part of each gene 
    genes: [gene1, gene2, ... , geneN] 
    genes encoded as strings"""
 def mutation(genes):
@@ -82,7 +115,6 @@ def mutation(genes):
 
         mutatedGenes.append("".join(geneToList))
     return mutatedGenes
-
 
 """function to make nxn board with no queens"""
 def n_zeros(board):
@@ -117,13 +149,21 @@ def board_to_gene(board):
 
 if __name__ == "__main__":
 
-    genes = ["01234", "03421", "23104" ,"13204"]
-    i = 0
-    for gene in genes:
-        print(f"Gene {i+1} Fitness: {encoded_fitness(gene)}")
-        i += 1
 
-    print(normalize_fitness("0123", genes))
+    boards = generate_boards(4, 5)
+
+    for board in boards:
+        board.show_map()
+        print()
+
+
+    # genes = ["01234", "03421", "23104" ,"13204"]
+    # i = 0
+    # for gene in genes:
+    #     print(f"Gene {i+1} Fitness: {encoded_fitness(gene)}")
+    #     i += 1
+
+    # print(normalize_fitness("0123", genes))
 
     # test = Board(5)
 
@@ -134,9 +174,4 @@ if __name__ == "__main__":
     # originalBoard = gene_to_board(gene)
     # print(f"Board from gene {gene}:\n")
     # originalBoard.show_map()
-
-
-
-
-
 
