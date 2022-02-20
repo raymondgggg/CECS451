@@ -2,13 +2,12 @@ import random
 import time
 from board import Board
 
-
 def genetic_algorhythm(numGenes):
     boards = generate_boards(numGenes, 5)
-    population = []
+    population = [0] * numGenes
 
-    for board in boards: # get gene representation of boards
-        population.append(board_to_gene(board))
+    for i in range(len(boards)): # get gene representation of boards
+        population[i] = board_to_gene(boards[i])
 
     winingGene = ''
     geneFitness = -1
@@ -34,9 +33,9 @@ def genetic_algorhythm(numGenes):
 
 """function that generates n boards mxm"""
 def generate_boards(n, m):
-    boards = []
+    boards = [0] * n
     for i in range(n):
-        boards.append(Board(m))
+        boards[i] = Board(m)
     return boards
 
 """pass in the dna encoded ordering of the queens 
@@ -54,7 +53,6 @@ def normalize_fitness(genePool): #optimized
     for i in range(len(geneFitnesses)):
         geneFitnesses[i] = encoded_fitness(genePool[i])
         
-    
     fitnessSum = sum(geneFitnesses)
 
     nGeneFitnesses = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -71,11 +69,11 @@ def normalize_fitness(genePool): #optimized
 def selection(genes,normalizedGenes):
     r = random.uniform(0,1)
 
-    selectValues = []
+    selectValues = [0] * 8
     selectSum = 0
-    for nGene in normalizedGenes:
-        selectSum += nGene
-        selectValues.append(selectSum)
+    for i in range(len(normalizedGenes)):
+        selectSum += normalizedGenes[i]
+        selectValues[i] = selectSum
     
     if r < selectValues[0]:
         return genes[0]
@@ -123,7 +121,6 @@ def cross_over(genePairs):
 
         newGenes.append(newGene1)
         newGenes.append(newGene2)
-    
     return newGenes
 
 """function that will take the new crossed over genes and 
