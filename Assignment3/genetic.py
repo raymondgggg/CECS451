@@ -1,18 +1,40 @@
+import random
 from board import Board
 
 """pass in the dna encoded ordering of the queens 
-   and get the the fitness of the board setup step 3"""
+   and get the the fitness of the board setup"""
 def encoded_fitness(gene):
-    """Raymond"""
-
+    geneBoard = gene_to_board(gene)
+    return geneBoard.get_fitness()
+    
 """pass in a gene's fitness along with a list of the other fitnesses and receive 
-   a normalized value for gene fitness step 4"""
-def normalize_fitness(gene, geneFitnesses):
-    """Raymond2"""
+   a normalized value for gene fitness
+   gene:string 
+   genePool:[string]"""
+def normalize_fitness(gene, genePool):
+    geneFitness = encoded_fitness(gene)
+    genePoolFitSum = 0.0
+    for individualGene in genePool:
+        genePoolFitSum += encoded_fitness(individualGene)
+    return geneFitness/genePoolFitSum
+    
 
 """function that uses normalized fitness value as chance of selection
-   Note: needs to take in the number of genes, and the normalized values to determine selection step 5"""
-def selection():
+   Note: needs to take in the genes, and the normalized values to determine selection"""
+def selection(genes,normalizedGenes):
+    r = random.uniform(0,1)
+
+    if r < normalizedGenes[0]:
+        return genes[0]
+    elif r < normalizedGenes[1]:
+        return genes[1]
+    elif r < normalizedGenes[2]:
+        return genes[2]
+    else:
+        return genes[4]
+
+    
+
     """RayRay"""
 
 """ step 6"""
@@ -59,10 +81,27 @@ def board_to_gene(board):
     return "".join(stringList) # represents the gene
 
 if __name__ == "__main__":
-    test = Board(5)
 
-    test.show_map()
-    print(board_to_gene(test))
+    genes = ["0123", "0321", "2310" ,"1320"]
+    i = 0
+    for gene in genes:
+        print(f"Gene {i+1} Fitness: {encoded_fitness(gene)}")
+        i += 1
+
+    print(normalize_fitness("0123", genes))
+
+    # test = Board(5)
+
+    # test.show_map()
+    # gene = board_to_gene(test)
+    # print(f"\nString encoding: {gene}\n")
+
+    # originalBoard = gene_to_board(gene)
+    # print(f"Board from gene {gene}:\n")
+    # originalBoard.show_map()
+
+
+
 
 
 
