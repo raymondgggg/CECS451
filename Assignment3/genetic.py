@@ -136,14 +136,14 @@ def mutation(genes):
     return mutatedGenes
 
 """function to make nxn board with no queens"""
-def n_zeros(board):
+def n_zeros(board): #optimized 
     map = board.get_map()
     for row in range(len(map)):
         map[row] = [i * 0 for i in map[row]]
 
 """pass in the dna encoded ordering of queens 
    and get the board object returned"""
-def gene_to_board(gene):
+def gene_to_board(gene): #optimized
     board = Board(len(gene))
     n_zeros(board)
     map = board.get_map()
@@ -155,7 +155,7 @@ def gene_to_board(gene):
     
 """function that takes a board object and converts it to a string representation 
    for further genetic programming"""
-def board_to_gene(board):
+def board_to_gene(board): # doesn't need optimization
     stringList = []
     map = board.get_map()
     for row in range(len(map)):
