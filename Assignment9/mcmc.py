@@ -1,8 +1,8 @@
 import random
 tMatrix = [
-            [0.9321, 0.0069, 0.0061, 0.0000],
-            [0.4993, 0.1620, 0.0000, 0.3448],
-            [0.4395, 0.4701, 0.0909, 0.0000],
+            [0.9321, 0.0069, 0.0610, 0.0000],
+            [0.4932, 0.1620, 0.0000, 0.3448],
+            [0.4390, 0.0000, 0.4701, 0.0909],
             [0.0000, 0.1552, 0.4091, 0.4357] 
                                                 ]
 
@@ -53,23 +53,13 @@ def partC():
 
     c = (statesCounts[0] + statesCounts[1]) / 1_000_000
     c_not = (statesCounts[2] + statesCounts[3]) / 1_000_000
-    print(statesCounts)
+   
     print("Part C. The probability for the query")
     print(f"P(C|-s,w) = <{c:.4f},{c_not:.4f}>")
 
-        
-    
-
-
-
-
-
 if __name__ == "__main__":
+    # for row in tMatrix:
+    #     print(sum(row))
     partA()
     partB()
     partC()
-
-
-
-
-
